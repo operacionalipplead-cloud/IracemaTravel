@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -79,6 +79,9 @@ const AdsSection: React.FC = () => {
   const itemsPerPage = 4; // Display 4 items (2x2) per slide
   const totalPages = Math.ceil(gridAds.length / itemsPerPage);
 
+  // Direction state for animation
+  const [direction, setDirection] = useState(0);
+
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev + 1) % totalPages);
   };
@@ -86,6 +89,26 @@ const AdsSection: React.FC = () => {
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev - 1 + totalPages) % totalPages);
   };
+
+  const handleNext = () => {
+    setDirection(1);
+    nextSlide();
+  };
+
+  const handlePrev = () => {
+    setDirection(-1);
+    prevSlide();
+  };
+
+  // Auto-play effect
+  useEffect(() => {
+    const timer = setInterval(() => {
+      handleNext();
+    }, 3000);
+
+    // Clear interval on unmount or when dependencies change (like user manual interaction)
+    return () => clearInterval(timer);
+  }, [currentIndex]); // Re-run effect when index changes to reset timer
 
   const slideVariants = {
     enter: (direction: number) => ({
@@ -107,19 +130,6 @@ const AdsSection: React.FC = () => {
   const swipeConfidenceThreshold = 10000;
   const swipePower = (offset: number, velocity: number) => {
     return Math.abs(offset) * velocity;
-  };
-
-  // Direction state for animation
-  const [direction, setDirection] = useState(0);
-
-  const handleNext = () => {
-    setDirection(1);
-    nextSlide();
-  };
-
-  const handlePrev = () => {
-    setDirection(-1);
-    prevSlide();
   };
 
   return (
