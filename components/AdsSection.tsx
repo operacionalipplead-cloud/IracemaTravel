@@ -104,7 +104,7 @@ const AdsSection: React.FC = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       handleNext();
-    }, 3000);
+    }, 5000);
 
     // Clear interval on unmount or when dependencies change (like user manual interaction)
     return () => clearInterval(timer);
@@ -112,8 +112,8 @@ const AdsSection: React.FC = () => {
 
   const slideVariants = {
     enter: (direction: number) => ({
-      x: direction > 0 ? 300 : -300,
-      opacity: 0
+      x: direction > 0 ? '100%' : '-100%',
+      opacity: 1
     }),
     center: {
       zIndex: 1,
@@ -122,8 +122,8 @@ const AdsSection: React.FC = () => {
     },
     exit: (direction: number) => ({
       zIndex: 0,
-      x: direction < 0 ? 300 : -300,
-      opacity: 0
+      x: direction < 0 ? '100%' : '-100%',
+      opacity: 1
     })
   };
 
@@ -163,8 +163,8 @@ const AdsSection: React.FC = () => {
       </div>
 
       {/* Carousel Section for Square Cards (2x2 Grid) */}
-      <div className="w-full relative min-h-[380px]"> {/* Height adjusted for 2 rows of aspect-square cards */}
-        <AnimatePresence initial={false} mode="wait" custom={direction}>
+      <div className="w-full relative min-h-[380px] overflow-hidden"> {/* Height adjusted for 2 rows of aspect-square cards */}
+        <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={currentIndex}
             custom={direction}
